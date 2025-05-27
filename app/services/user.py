@@ -64,4 +64,3 @@ async def sign_in(password: str, email: str = None) -> str:
         return token
     else:
         raise exceptions.WrongPassword("Wrong password", 401)
-
