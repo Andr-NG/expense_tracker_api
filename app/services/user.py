@@ -35,22 +35,24 @@ async def create_user(email: str, password: str) -> None:
 
     elif query_result["email"] == email.lower():
         raise exceptions.EmailAlreadyExists(
-            message=f"User with email '{email.lower()}' already exists", http_code=409
+            f"User with email '{email.lower()}' already exists", 409
         )
 
 
 async def sign_in(password: str, email: str = None) -> str:
 
     now = datetime.now(tz=timezone.utc)
-    claimset = {"email": email, "iat": now, "exp": now + timedelta(days=1)}
+    claimset = {"email": email.lower(), "iat": now, "exp": now + timedelta(days=1)}
     md5_hashed = hashlib.sha256(password.encode()).hexdigest()
 
     db = get_db()
     query = db.execute(
-        """SELECT email, hashed_password FROM users WHERE email = ?""",
-        (email,)
+        """SELECT email, hashed_password FROM users WHERE email = ?""", (email,)
     )
     query_result = query.fetchone()
+
+    if not query_result:
+        raise exceptions.UserNotFound("User not found", 404)
 
     if all(
         [
@@ -60,3 +62,6 @@ async def sign_in(password: str, email: str = None) -> str:
     ):
         token = jwt.encode(payload=claimset, key=os.getenv("SECRET"), algorithm="HS256")
         return token
+    else:
+        raise exceptions.WrongPassword("Wrong password", 401)
+

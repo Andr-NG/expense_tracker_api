@@ -20,7 +20,7 @@ async def register(user: UserCreate) -> AppBaseResponse:
         )
     except AppBaseError as e:
         raise HTTPException(
-            status_code=409,
+            status_code=e.http_code,
             detail=AppBaseResponse(message=e.message, http_code=e.http_code).to_dict(),
         )
     except sqlite3.DatabaseError:
@@ -51,4 +51,10 @@ async def log_in(user: UserSignIn) -> SignInResponse:
         raise HTTPException(
             status_code=400,
             detail=AppBaseResponse(message=str(e), http_code=400).to_dict(),
+        )
+
+    except AppBaseError as e:
+        raise HTTPException(
+            status_code=e.http_code,
+            detail=AppBaseResponse(message=e.message, http_code=e.http_code).to_dict(),
         )

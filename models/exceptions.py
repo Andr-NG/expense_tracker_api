@@ -9,3 +9,10 @@ class AppBaseError(Exception):
 class EmailAlreadyExists(AppBaseError):
     """Raised when a user with the given email already exists."""
 
+
+class UserNotFound(AppBaseError):
+    """Raised when the given email does not exist."""
+
+
+class WrongPassword(AppBaseError):
+    """Raised when the given password does not exist."""

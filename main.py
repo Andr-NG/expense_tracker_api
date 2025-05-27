@@ -20,10 +20,25 @@ async def validation_exception_handler(
 ) -> JSONResponse:
     new_format = [error for error in exc.errors()]
 
-    return JSONResponse(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        content=AppBaseResponse(message=new_format[0]["msg"], http_code=400).to_dict(),
-    )
+    if "not a valid email" in new_format[0]["msg"]:
+
+        # For cases where the input email is invalid
+        # The return msg is "An email address must have an @-sign."
+        returned_msg = new_format[0]["msg"].split(": ")[1].rstrip('.')
+
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=AppBaseResponse(
+                message=returned_msg, http_code=400
+            ).to_dict()
+        )
+    else:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=AppBaseResponse(
+                message=new_format[0]["msg"], http_code=400
+            ).to_dict(),
+        )
 
 
 app.include_router(user.router)
