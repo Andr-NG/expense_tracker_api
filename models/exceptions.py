@@ -17,3 +17,15 @@ class UserNotFound(AppBaseError):
 
 class WrongPassword(AppBaseError):
     """Raised when the given password does not exist."""
+
+
+class SuspendedAccount(AppBaseError):
+    """Raised when is_active=False"""
+
+
+class WrongToken(AppBaseError):
+    """Raised when JWT is invalid"""
+
+
+class DataBaseError(AppBaseError):
+    """Raised when  there a db error"""
