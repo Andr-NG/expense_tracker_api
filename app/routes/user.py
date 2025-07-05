@@ -25,8 +25,7 @@ async def register(user: UserCreate) -> AppBaseResponse:
         logger.error(f"An app error has occurred: {e}")
         raise handle_app_exception(e)
 
-    except sqlite3.Error as e:
-        logger.error(f"A database error has occurred: {e}")
+    except sqlite3.Error:
         raise handle_db_exception()
 
     # Handling the password error
@@ -42,12 +41,13 @@ async def register(user: UserCreate) -> AppBaseResponse:
 async def log_in(user: UserSignIn) -> SignInResponse:
 
     try:
-        logger.info("Attempting to sign in")
-        token = await sign_in(password=user.password, email=user.email)
-        logger.info("User signed in successfully")
+        logger.info(f"User {user.email} attempting to sign in")
+        token, user_id = await sign_in(password=user.password, email=user.email)
+        logger.info(f"User {user.email} signed in successfully")
         return SignInResponse(
             message="User signed in successfully",
             token=token,
+            user_id=user_id,
             http_code=status.HTTP_201_CREATED,
         )
 

@@ -28,4 +28,12 @@ class WrongToken(AppBaseError):
 
 
 class DataBaseError(AppBaseError):
-    """Raised when  there a db error"""
+    """Raised when there a db error"""
+
+
+class NonExistentCategory(AppBaseError):
+    """Raised when category_id does not exist"""
+
+
+class TransactionNotFound(AppBaseError):
+    """Raised when a transaction to delete does not exist"""
