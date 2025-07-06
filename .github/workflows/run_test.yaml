@@ -11,6 +11,7 @@ jobs:
 
     - name: Rub Docker tests
       run: |
+        ls
         docker build -t docker-api-test .
         docker run --rm \
           -e EMAIL=${{ vars.EMAIL }} \
