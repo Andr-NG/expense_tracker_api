@@ -15,8 +15,8 @@ jobs:
         docker build -t docker-api-test ./tests
         docker run --rm \
           -e EMAIL=${{ vars.EMAIL }} \
-          -e PASSWORD=${{ secrets.PASSWORD }}
-          -e SECRET=${{ secrets.SECRET }}
+          -e PASSWORD=${{ secrets.PASSWORD }} \
+          -e SECRET=${{ secrets.SECRET }} \
           docker-api-test
 
 
