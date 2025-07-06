@@ -17,6 +17,7 @@ jobs:
           -e EMAIL=${{ vars.EMAIL }} \
           -e PASSWORD=${{ secrets.PASSWORD }}
           -e SECRET=${{ secrets.SECRET }}
+          docker-api-test
 
 
 
