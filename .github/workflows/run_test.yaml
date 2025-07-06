@@ -5,19 +5,17 @@ on: push
 jobs:
   run_tests:
     runs-on: ubuntu-latest
+    env:
+      EMAIL=${{ vars.EMAIL }}
+      PASSWORD=${{ secrets.PASSWORD }}
+      SECRET=${{ secrets.SECRET }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Rub Docker tests
+    - name: Run tests
       run: |
-        ls
-        docker build -t docker-api-test ./tests
-        docker run --rm \
-          -e EMAIL=${{ vars.EMAIL }} \
-          -e PASSWORD=${{ secrets.PASSWORD }} \
-          -e SECRET=${{ secrets.SECRET }} \
-          docker-api-test
+        pytest tests -v -s
 
 
 
