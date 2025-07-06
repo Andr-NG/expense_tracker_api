@@ -9,13 +9,14 @@ jobs:
       EMAIL=${{ vars.EMAIL }}
       PASSWORD=${{ secrets.PASSWORD }}
       SECRET=${{ secrets.SECRET }}
+  
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Run tests
       run: |
-        pytest tests -v -s
+        docker-compose up --build --abort-on-container-exit
 
 
 

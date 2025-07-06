@@ -5,7 +5,7 @@ import jwt
 
 def test_sign_in():
     URL_2 = "http://127.0.0.1:12345"
-    URL = "http://host.docker.internal:12345/api/v1/user/login"
+    URL = "http://fastapi:8000/api/v1/user/login"
     creds = {"email": os.getenv("EMAIL"), "password": os.getenv("PASSWORD")}
     sign_in_request = requests.post(url=URL, json=creds)
     assert sign_in_request.status_code == 200
@@ -15,7 +15,7 @@ def test_sign_in():
 
 def test_token():
     URL_2 = "http://127.0.0.1:12345"
-    URL = "http://host.docker.internal:12345/api/v1/user/login"
+    URL = "http://fastapi:8000/api/v1/user/login"
     creds = {"email": os.getenv("EMAIL"), "password": os.getenv("PASSWORD")}
     sign_in_request = requests.post(url=URL, json=creds)
     assert sign_in_request.status_code == 200
