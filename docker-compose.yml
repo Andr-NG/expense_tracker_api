@@ -21,7 +21,7 @@ services:
     image: python:3.12-slim
     depends_on:
       - fastapi
-    working_dir: /tests
+    working_dir: /tracker
     volumes:
       - ./tests:/test
     environment:
@@ -29,5 +29,5 @@ services:
       - PASSWORD=${PASSWORD}
       - SECRET=${SECRET}
     command: >
-      sh -c "pip install --no-cache-dir -r /tests/requirements.txt &&
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
         pytest -v -s"
