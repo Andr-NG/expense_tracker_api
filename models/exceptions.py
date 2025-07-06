@@ -31,8 +31,8 @@ class DataBaseError(AppBaseError):
     """Raised when there a db error"""
 
 
-class NonExistentCategory(AppBaseError):
-    """Raised when category_id does not exist"""
+class InvalidCategory(AppBaseError):
+    """Raised when category_id is invalid"""
 
 
 class TransactionNotFound(AppBaseError):

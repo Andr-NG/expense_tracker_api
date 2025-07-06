@@ -64,6 +64,7 @@ async def create_new_transaction(
                 transaction_id=str(shortuuid.uuid()),
                 user_id=user_token.user_id,
                 amount=trans.amount,
+                currency=trans.currency,
                 date=trans.date,
                 category_id=trans.category_id,
                 type=trans.type,

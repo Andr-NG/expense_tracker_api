@@ -43,8 +43,8 @@ async def create_user(email: str, password: str) -> None:
 
         # Getting user_id to create default categories
         id = get_user_info_by_email(email.lower(), "id")
-        create_default_categories(user_id=id)
-        logger.info("Default categories created for a new user")
+        await create_default_categories(user_id=id)
+        logger.info(f"Default categories created for user_id: {id}")
 
     elif query_result["email"] == email.lower():
         raise exceptions.EmailAlreadyExists(

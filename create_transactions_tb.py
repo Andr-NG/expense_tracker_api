@@ -6,6 +6,7 @@ cursor.execute(
     """
         CREATE TABLE IF NOT EXISTS transactions (
         transaction_id TEXT PRIMARY KEY,
+        currency TEXT NOT NULL,
         user_id INTEGER NOT NULL,
         amount REAL NOT NULL,
         type TEXT NOT NULL CHECK(type in ('income', 'expense')),

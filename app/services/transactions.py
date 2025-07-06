@@ -8,15 +8,13 @@ from models import exceptions
 async def add_transaction(
     user_id: int,
     amount: float,
+    currency: str,
     type: str,
     category_id: int,
     transaction_id: str,
     date: str = None,
     description: str = None,
 ) -> None:
-    logger.info(
-        f"The query is {(transaction_id, user_id, amount, type, description, date, category_id)}"
-    )
 
     try:
         # Checking the input category_id
@@ -30,23 +28,29 @@ async def add_transaction(
             """,
             (user_id,),
         )
-        cat_ids = [cat[0] for cat in query.fetchall()]
 
-        if category_id not in cat_ids:
-            logger.error("Failed to locate the given category_id in the system")
-            raise exceptions.NonExistentCategory("No such category_id exists", 404)
+        for cat in [dict(cat) for cat in query.fetchall()]:
 
-        else:
-            db.execute(
-                """
-            INSERT INTO transactions (transaction_id, user_id, amount, type, description, date,
-            category_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-                (transaction_id, user_id, amount, type, description, date, category_id),
-            )
-            db.commit()
-            logger.info("Creating a record in transactions")
+            if category_id == cat["id"] and cat["type"] != type:
+                logger.error(f"Input type: {type} is not equal to {cat["type"]}")
+                raise exceptions.InvalidCategory(f"Type {type} does not match the actual category type", 404)  # noqa: E501
+
+            elif category_id != cat["id"] and cat["type"] != type:
+                logger.error(f"Type: {type} and category_id: {category_id} do not exist")
+                raise exceptions.InvalidCategory(f"Type: {type} and category_id: {category_id} do not exist", 404)  # noqa: E501
+
+            else:
+                db.execute(
+                    """
+                INSERT INTO transactions (transaction_id, user_id, amount, currency, type, description, date,
+                category_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,  # noqa: E501
+                    (transaction_id, user_id, amount, currency, type, description, date, category_id),  # noqa: E501
+                )
+                db.commit()
+                logger.info("Creating a record in transactions")
+                break
     except sqlite3.Error as e:
         logger.error(f"A database error has occured when creating transactions: {e}")
         raise sqlite3.Error
