@@ -20,7 +20,7 @@ services:
   tests:
     image: python:3.12-slim
     depends_on:
-      fastapi
+      - fastapi
     working_dir: /tests
     volumes:
       - ./tests:/test
