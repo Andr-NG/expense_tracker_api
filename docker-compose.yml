@@ -11,11 +11,11 @@ services:
       - EMAIL=${EMAIL}
       - PASSWORD=${PASSWORD}
       - SECRET=${SECRET}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
   tests:
     image: python:3.12-slim
